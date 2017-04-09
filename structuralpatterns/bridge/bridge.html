@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>adapter 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+    (function() {
+		document.write("bridge设计模式(对象方式).<br>");
+			
+		// 定义AbstractAction抽象类.
+		function AbstractAction( ){};
+		
+		AbstractAction.prototype.doAction = function(depart,title){	
+		    if (  depart == null ){
+			      document.write('这是部门的标准工作活动.<br>');
+			}
+   		     document.write('这是'+depart +'部门的标准工作活动,'+'主题是'+title +'.<br>');
+		};
+		
+		// 定义AbstractDepartment抽象类.
+		function AbstractDepartment( ){
+		    this.departAction = null;
+		};
+		
+		AbstractDepartment.prototype.setAbstractAction = function(action){	
+		    this.departAction = action;
+		};
+		
+		AbstractDepartment.prototype.getAbstractAction = function(){	
+		    return this.departAction ;
+		};
+		
+		AbstractDepartment.prototype.action = function(title){	
+		    this.departAction.doAction("",title);
+		};
+		
+		// 定义DevelopmentDep实现类，继承AbstractDepartment抽象类.
+	    function DevelopmentDep( ){
+		    this.departName = '开发部';
+		};
+		
+		DevelopmentDep.prototype  = new AbstractDepartment();
+
+		DevelopmentDep.prototype.action = function(title){	
+   		    this.getAbstractAction().doAction(this.departName,title);
+		};
+		
+		// 定义FinanceDep实现类，继承AbstractDepartment抽象类.		
+		function FinanceDep( ){
+		    this.departName = '财务部';
+		};
+		
+		FinanceDep.prototype  = new AbstractDepartment();
+
+		FinanceDep.prototype.action = function(title){	
+   		    this.getAbstractAction().doAction(this.departName,title);
+		};
+		
+		// 定义MarketDep实现类，继承AbstractDepartment抽象类.
+		function MarketDep( ){
+		    this.departName = '市场部';
+		};
+		
+		MarketDep.prototype  = new AbstractDepartment();
+
+		MarketDep.prototype.action = function(title){	
+   		    this.getAbstractAction().doAction(this.departName,title);
+		};
+		
+		// 定义Meeting实现类，继承AbstractAction抽象类.
+		function Meeting( ){};
+		
+		Meeting.prototype  = new AbstractAction();
+
+		Meeting.prototype.doAction = function(depart,title){	
+		    if (  depart == null ){
+			      document.write('这是部门的标准工作活动.<br>');
+			}
+   		     document.write('这是' + depart +'部门的标准工作活动,'+'主题是'+title +'.<br>');
+		};
+		
+		// 定义Training实现类，继承AbstractAction抽象类.
+		function Training( ){};
+		
+		Training.prototype  = new AbstractAction();
+
+		Training.prototype.doAction = function(depart,title){	
+		    if (  depart == null ){
+			      document.write('这是部门的标准工作活动.<br>');
+			}
+   		     document.write('这是' + depart +'部门的标准工作活动,'+'主题是'+title +'.<br>');
+		};
+			
+
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+
+		//场景1：针对开发部的培训工作
+		var action1 = new Training();
+		var depart1 = new DevelopmentDep();
+		depart1.setAbstractAction(action1);
+		depart1.action('提高开发技能');	
+		
+		//场景2：针对财务部的会计检查工作
+		var action2 = new Meeting();
+		var depart2 = new FinanceDep();
+		depart2.setAbstractAction(action2);
+		depart2.action('检查会计制度');	
+		
+		//场景3：针对市场部的培训工作
+		var action3 = new Training();
+		var depart3 = new MarketDep();
+		depart3.setAbstractAction(action3);
+		depart3.action('沟通技巧');	
+				
+		document.write("——————————————程序结束运行.——————————————<br>");
+		
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>decorator 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("decorator设计模式(对象方式).<br>");	
+		
+		// 定义AbstractProcess抽象类.
+		function AbstractProcess(){
+		    this.componentList = new Array(); 		
+		};
+		
+		AbstractProcess.prototype.getcomponentList = function(  ){	
+             return this.componentList;					
+		};
+		
+		AbstractProcess.prototype.addProcess = function( processName ){	
+             this.getcomponentList().push( processName );					
+		};
+		
+		AbstractProcess.prototype.showAllProcess = function(  ){	
+             document.write(this.componentList + ".<br>");					
+		};
+		
+		
+		// 定义标准过程类，继承AbstractProcess抽象类.
+		function StandardProcess(){};
+		
+		StandardProcess.prototype = new AbstractProcess();
+		
+		StandardProcess.prototype.initizeProcess = function( ){	
+		    this.addProcess("需求分析过程");
+		    this.addProcess("设计过程");
+		    this.addProcess("编码过程");
+		    this.addProcess("测试过程");
+		    this.addProcess("部署过程");
+		    this.addProcess("维护过程");	             			
+		};		
+		
+		// 定义附加过程类，继承AbstractProcess抽象类.
+		function AdditionalProcess(){
+		    this.actualProcess = null; 		
+		};
+		
+		AdditionalProcess.prototype = new AbstractProcess();
+		
+		AdditionalProcess.prototype.setActualProcess = function( actualProcess ){	
+             this.actualProcess = actualProcess; 					
+		};
+		
+		AdditionalProcess.prototype.getActualProcess = function( ){	
+            return this.actualProcess ; 					
+		};
+					
+		// 定义设计检查类，继承附加过程类.
+		function DesignCheckProcess(){};
+		
+		DesignCheckProcess.prototype = new AdditionalProcess();
+		
+		DesignCheckProcess.prototype.ConcreteActualProcess = function( ){	
+		     this.getActualProcess().addProcess("设计检查");             				
+		};
+		
+		// 定义需求验证类，继承附加过程类.
+		function RequestVerificationProcess(){};
+		
+		RequestVerificationProcess.prototype = new AdditionalProcess();
+		
+		RequestVerificationProcess.prototype.ConcreteActualProcess = function( ){	
+		     this.getActualProcess().addProcess("需求验证");             				
+		};
+					
+
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+        
+		var projectProcess = new StandardProcess();
+		projectProcess.initizeProcess();
+		document.write("——————项目的标准过程———————<br>");
+		projectProcess.showAllProcess();		
+		
+		var projectAddProcess1 = new RequestVerificationProcess();
+		projectAddProcess1.setActualProcess(projectProcess);
+		projectAddProcess1.ConcreteActualProcess();
+		
+		document.write("——————增加需求验证过程后的项目过程———————<br>");
+		projectProcess.showAllProcess();
+				
+		var projectAddProcess2 = new DesignCheckProcess();
+		projectAddProcess2.setActualProcess(projectProcess);
+		projectAddProcess2.ConcreteActualProcess();
+		
+		document.write("——————再增加设计检查过程后的项目过程———————<br>");
+		projectProcess.showAllProcess();			
+
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

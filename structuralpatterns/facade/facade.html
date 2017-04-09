@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>facade 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("facade设计模式(对象方式).<br>");
+			
+		// 定义DoWork类.
+		function DoWork(){};
+		
+		DoWork.prototype.operate = function(){	
+		    document.write("员工：打卡考勤。<br>");		   
+		};
+		
+		// 定义Inspection类.
+		function Inspection(){};
+		
+		Inspection.prototype.operate = function(){	
+		    document.write("领导视察：端茶倒水。<br>");		   
+		};
+		
+		// 定义Post类.
+		function Post(){};
+		
+		Post.prototype.operate = function(){	
+		    document.write("邮递员：登记收发物品。<br>");		   
+		};
+		
+		// 定义Visit类.
+		function Visit(){};
+		
+		Visit.prototype.operate = function(){	
+		    document.write("访客：登记身份证。<br>");		   
+		};
+		
+		// 定义门面类.
+		function Facade(){
+		    this.visit = new Visit();
+		    this.post = new Post();
+		    this.inspection = new Inspection();
+		    this.doWork = new DoWork();
+		};
+
+		Facade.prototype.Operate = function( operation ){	
+		    var operate = operation.toLowerCase();
+			switch (operate) {
+				case 'visit':
+					this.visit.operate();
+					break;
+				case 'post':
+					this.post.operate();
+					break;
+				case 'inspection':
+					this.inspection.operate();
+					break;
+				case 'dowork':
+					this.doWork.operate();
+					break;
+				default:
+					document.write("没有对应事项，不能工作。<br>");	
+			}		    	   
+		};		
+
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");        
+				
+		var facade = new Facade();
+		//向前台要求访客
+		facade.Operate("visit");
+		//向前台提交邮品
+		facade.Operate("post");
+		//领导过来视察
+		facade.Operate("inspection");
+		//员工上班
+		facade.Operate("doWork");
+		//study是没有对应的工作接口
+		facade.Operate("study");		
+
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

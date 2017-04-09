@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>flyweight 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("flyweight设计模式(对象方式).<br>");
+								
+		// 定义Document抽象类.
+		function Document (){};
+		
+		Document.prototype.readDocument = function(){	
+              document.write("请阅读文档。<br>");		
+		};
+		
+		// 定义AdministrativeDcoment类，继承Document抽象类.
+		function AdministrativeDcoment(){};
+		
+		AdministrativeDcoment.prototype = new Document();
+				
+		AdministrativeDcoment.prototype.readDocument = function(){	             
+             document.write("请阅读行政文档。<br>");			 
+		};
+		
+		// 定义FinancialDocument类，继承Document抽象类.
+		function FinancialDocument(){};
+		
+		FinancialDocument.prototype = new Document();
+				
+		FinancialDocument.prototype.readDocument = function(){	             
+             document.write("请阅读财务文档。<br>");			 
+		};
+		
+		// 定义TechnicalDocument类，继承Document抽象类.
+		function TechnicalDocument(){};
+		
+		TechnicalDocument.prototype = new Document();
+				
+		TechnicalDocument.prototype.readDocument = function(){	             
+             document.write("请阅读技术文档。<br>");			 
+		};
+		
+		// 定义DocumentRepository类，为文档仓库性质。
+		function DocumentRepository(){
+		    this.Documentkeys = new Array();           
+            this.DocumentData = new Object();		
+		};
+				
+		DocumentRepository.prototype.initizeRepository = function(){            	
+            this.Documentkeys.push('行政文档');
+			this.DocumentData['行政文档'] = new AdministrativeDcoment();		
+
+			this.Documentkeys.push('财务文档');
+			this.DocumentData['财务文档'] = new FinancialDocument();		
+
+            this.Documentkeys.push('技术文档');
+			this.DocumentData['技术文档'] = new TechnicalDocument();				 
+		};
+		
+		DocumentRepository.prototype.getDocument = function( docType ){ 		    
+			for(var i = 0;i<this.Documentkeys.length;i++){			    
+                var k = this.Documentkeys[i];						
+				if (this.Documentkeys[i] == docType){
+				    return this.DocumentData[k];					
+				} 
+			}
+			document.write("没有此类文档。<br>");
+		    return null;
+		};
+		
+		
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+
+		var repository = new DocumentRepository();
+		repository.initizeRepository();
+		
+		var doc1 = repository.getDocument('行政文档');
+		if (doc1 != null ){
+		   doc1.readDocument();
+		}
+		
+		var doc2 = repository.getDocument('技术文档');
+		if (doc2 != null ){
+		   doc2.readDocument();
+		}		
+		
+		var doc3 = repository.getDocument('财务文档');
+		if (doc3 != null ){
+		   doc3.readDocument();
+		}
+		
+		var doc4 = repository.getDocument('财政文档');
+		if (doc4 != null ){
+		   doc4.readDocument();
+		}		
+
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

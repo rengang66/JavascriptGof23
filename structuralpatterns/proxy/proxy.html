@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>adapter 设计模式(对象方式)</title>
+
+<script type="text/javascript">    
+
+	(function() {
+		document.write("proxy设计模式(对象方式).<br>");
+			
+		// 定义AbstractOrganization抽象类.
+		function AbstractOrganization( ){};
+		
+		AbstractOrganization.prototype.request = function(){
+		};
+						
+		// 定义Corporation类，继承AbstractOrganization抽象类.
+		function Corporation( name ){};		
+					
+		Corporation.prototype = new AbstractOrganization( );
+		
+		Corporation.prototype.request= function(){	
+		    document.write("这是公司的答复。.<br>");					    
+		};
+				
+        // 定义Agency类.
+		function Agency( object ){ 
+		    this.corporation  = object ;
+		};					
+		
+		Agency.prototype.request= function(){
+            if 	(this.corporation == null)	{
+			    this.corporation = new Corporation();
+			}
+			this.corporation.request();		    				    
+		};
+				
+		
+		//  程序开始运行
+		document.write("————————程序开始运行.————————<br>");
+        
+		document.write("—————没有代理的直接答复。——————<br>");
+		var corporation = new Corporation();
+		corporation.request();
+		
+		document.write("—————有代理的答复。——————<br>");
+		var agency = new Agency(corporation);
+		agency.request();
+		
+		document.write("————————程序结束运行.————————<br>");
+		
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

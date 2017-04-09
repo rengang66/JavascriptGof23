@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>adapter 设计模式(对象方式)</title>
+
+<script type="text/javascript">    
+
+	(function() {
+		document.write("adapter设计模式(对象方式).<br>");
+			
+		// 定义Customer类.
+		function Customer( name ){
+		   this.customerName = name ;
+	       this.requirement = null;	
+		};
+		
+		Customer.prototype.setRequirement = function(require){	
+   		    this.requirement = require;
+		};
+		
+		Customer.prototype.getRequirement = function(){	
+   		    return this.requirement ;
+		};
+		
+		Customer.prototype.commitRequirement = function(){
+            document.write("————用户提交需求————.<br>");
+			return this.requirement ;
+		};
+		
+		// 定义Designer类.
+		function Designer( name ){
+		   this.designerName = name ;
+	       this.works = null;	
+		   this.Designs = null;
+		};		
+					
+		Designer.prototype.setDesign = function( design ){	
+   		    this.Designs = design;
+		};	
+		
+		Designer.prototype.designToWorks = function(){	
+		    document.write("————按照需求分析设计转化为具体工作————.<br>");			
+			this.works = this.Designs + this.designerName +'按照需求设计内容，完成工作。<br>';   		    
+		};
+				
+		Designer.prototype.getFinishWork = function(){		
+		    this.designToWorks();			
+   		    return this.works ;
+		};
+		
+        // 定义Analyst类.		
+		function Analyst( name ){			
+		   this.analystName = name ;
+	       this.designer = null;
+	       this.request = null;			
+		};
+		
+		Analyst.prototype = new Customer();
+		
+		Analyst.prototype.setRequest = function( content ){			    
+			this.request = content;	
+		};
+		
+		Analyst.prototype.setDesigner = function( object ){			    
+			this.designer = object;
+		};
+		
+		Analyst.prototype.requestToDesign = function( ){			    
+		    document.write("————分析员按照用户需求转化为需求分析和设计————<br>");
+		    return  this.analystName + '按照' + this.request +'，形成需求设计内容。<br>' ;
+		};
+		
+		Analyst.prototype.getFinishworks = function( ){
+			var designs = this.requestToDesign();			
+			this.designer.setDesign(designs);
+			return  this.designer.getFinishWork();
+		};
+				
+
+		//  程序开始运行
+		document.write("————————程序开始运行.————————<br>");
+
+		var customer = new Customer('客户小王');	
+				
+		customer.setRequirement('客户小王的需求');
+				
+		var designer = new Designer('开发员小张');
+				
+		var analyst = new Analyst('分析员小刘');
+				
+		//客户把用户需求提交给分析员		
+		analyst.setRequest(customer.commitRequirement());
+		
+		//分析员经过转化后提供给开发人员		
+		analyst.setDesigner(designer);
+		
+		//得到满足客户的需求的工作产品		
+		document.write( analyst.getFinishworks() );
+		
+		document.write("————————程序结束运行.————————<br>");
+		
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

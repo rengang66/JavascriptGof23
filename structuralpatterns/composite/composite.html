@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>composite 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+    
+	(function() {
+		document.write("composite设计模式(对象方式).<br>");
+			
+		// 定义AbstractOrganization抽象类.
+		function AbstractOrganization( name ){
+		   this.organizationName = name ;
+	       this.organizationType = null;	
+		};		
+				
+		AbstractOrganization.prototype.setOrganizationName = function(organizationName){	
+   		    this.organizationName = organizationName;
+		};
+		
+		AbstractOrganization.prototype.getOrganizationName = function(){	
+   		    return this.organizationName ;
+		};
+						
+		// 定义Corporation类，继承AbstractOrganization抽象类.
+		function Corporation( name ){
+		   this.organizationName = name ;		   
+		   this.organizationType = "Corporation";
+		   this.componentList = new Array();	       
+		};		
+					
+		Corporation.prototype = new AbstractOrganization( );
+		
+		Corporation.prototype.add = function(organization){	
+		    this.componentList.push( organization );   		    
+		};
+				
+		Corporation.prototype.showOrganizationStructure = function( parentName ){		
+		    var organizationName = this.getOrganizationName();		
+   		    document.write( parentName + organizationName + "<br>");
+			for(var i = 0;i<this.componentList.length;i++){
+                   var organization = this.componentList[i];                   
+				   organization.showOrganizationStructure(parentName + organizationName+"——");
+			}			
+		};
+		
+		// 定义Department类，继承AbstractOrganization抽象类.
+		function Department( name ){
+		   this.organizationName = name ;		   
+		   this.organizationType = "Department";
+		   this.componentList = new Array();	       
+		};		
+					
+		Department.prototype = new AbstractOrganization( );
+		
+		Department.prototype.add = function(organization){	
+		    this.componentList.push( organization );   		    
+		};
+				
+		Department.prototype.showOrganizationStructure = function( parentName ){		
+		    var organizationName = this.getOrganizationName();		
+   		    document.write( parentName + organizationName + "<br>");
+			for(var i = 0;i<this.componentList.length;i++){
+                   var organization = this.componentList[i];                   
+				   organization.showOrganizationStructure(parentName + organizationName+"——");
+			}			
+		};
+				
+		// 定义Factory类，继承AbstractOrganization抽象类.
+		function Factory( name ){
+		   this.organizationName = name ;		   
+		   this.organizationType = "Factory";
+		   this.componentList = new Array();	       
+		};		
+					
+		Factory.prototype = new AbstractOrganization( );
+		
+		Factory.prototype.add = function(organization){	
+		    this.componentList.push( organization );   		    
+		};
+				
+		Factory.prototype.showOrganizationStructure = function( parentName ){		
+		    var organizationName = this.getOrganizationName();		
+   		    document.write( parentName + organizationName + "<br>");
+			for(var i = 0;i<this.componentList.length;i++){
+                   var organization = this.componentList[i];                   
+				   organization.showOrganizationStructure(parentName + organizationName+"——");
+			}			
+		};
+		
+		
+		// 定义WorkTeam类，继承AbstractOrganization抽象类.
+		function WorkTeam( name ){
+		   this.organizationName = name ;		   
+		   this.organizationType = "WorkTeam";
+		   this.componentList = new Array();	       
+		};		
+					
+		WorkTeam.prototype = new AbstractOrganization( );
+		
+		WorkTeam.prototype.add = function(organization){	
+		    document.write( "这是叶子节点，下面没有内容<br>");		    
+		};
+				
+		WorkTeam.prototype.showOrganizationStructure = function( parentName ){	            		
+		    var organizationName = this.getOrganizationName();		
+   		    document.write( parentName + organizationName + "<br>");					
+		};
+				
+		// 定义Workshop类，继承AbstractOrganization抽象类.
+		function Workshop( name ){
+		   this.organizationName = name ;		   
+		   this.organizationType = "Workshop";
+		   this.componentList = new Array();	       
+		};		
+					
+		Workshop.prototype = new AbstractOrganization( );
+		
+		Workshop.prototype.add = function(organization){	
+		    document.write( "这是叶子节点，下面没有内容<br>");		    
+		};
+				
+		Workshop.prototype.showOrganizationStructure = function( parentName ){	            		
+		    var organizationName = this.getOrganizationName();		
+   		    document.write( parentName + organizationName + "<br>");					
+		};
+		
+		
+        function scene1(){		
+		    // 场景1，形成公司-部门-项目组的公司结构				
+		    var corporation = new Corporation("公司A");			
+			
+		    var depart1= new Department("部门1");
+		    var depart2= new Department("部门2");
+		    var depart3= new Department("部门3");			
+			
+		    corporation.add(depart1);
+		    corporation.add(depart2);
+		    corporation.add(depart3);		
+		    
+		    var team1= new WorkTeam("项目组1");
+		    var team2= new WorkTeam("项目组2");		
+		   
+		    depart1.add(team1);
+		    depart1.add(team2);		 
+		    
+		    corporation.showOrganizationStructure(" ");				
+		};	
+
+
+		function scene2(){
+		    // 场景2，形成公司-工厂-车间的工厂结构
+		    var corporation = new Corporation("公司A");
+		    var factory1= new Factory("工厂1");
+		    var factory2= new Factory("工厂2");
+		    var factory3= new Factory("工厂3");
+		    corporation.add(factory1);
+		    corporation.add(factory2);
+		    corporation.add(factory3);
+		
+		    var team1= new Workshop("车间1");
+		    var team2= new Workshop("车间2");
+		
+		    factory1.add(team1);
+		    factory1.add(team2);
+		
+		    corporation.showOrganizationStructure("");			
+		}		
+
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+
+		scene1();
+		
+		scene2();
+		
+		document.write("——————————————程序结束运行.——————————————<br>");
+		
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>
