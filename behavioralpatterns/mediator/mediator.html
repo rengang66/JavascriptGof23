@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>mediator设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("mediator设计模式(对象方式).<br>");
+		
+		// 增加Array类的删除方法
+		Array.prototype.remove = function( key ) {
+            for (var i = 0; i < this.length; i++) {
+                  if (key == this[i]){this.splice(i, 1);}					  
+			}
+        }
+		
+		//定义Member类
+		function Member(name){
+		    this.memberName = name;
+		};
+		
+		Member.prototype.setMemberName = function( memberName ){	
+             this.memberName = memberName;
+		};
+		
+		Member.prototype.getMemberName = function( ){	
+             return this.memberName ;
+		};
+		
+        //定义Task类		
+        function Task(name){
+		    this.taskName = name;
+		};
+		
+		Task.prototype.setTaskName = function( taskName ){	
+             this.taskName = taskName;
+		};
+		
+		Task.prototype.getTaskName = function( ){	
+             return this.taskName ;
+		};
+			
+		// 定义AbstractProject抽象类.		
+		function AbstractProject(){
+		    this.projectName = null;
+			this.leader = null ;
+			
+			this.memberKeys = new Array();            
+            this.memberData = new Object();
+			
+			this.taskKeys = new Array();            
+            this.taskData = new Object();			
+		};
+		
+		AbstractProject.prototype.getProjectName = function(){
+		    return this.projectName;
+		}
+		
+		AbstractProject.prototype.setProjectName = function(projectName){
+		    this.projectName = projectName;
+		}
+		
+		AbstractProject.prototype.getLeader = function(){
+		    return this.leader;
+		}
+		
+		AbstractProject.prototype.setLeader = function(leader){
+		    this.leader = leader;
+		}		
+		
+		AbstractProject.prototype.addMember = function( member ){
+		    var key = member.getMemberName();
+			if( this.memberData[key] == null){
+                this.memberKeys.push( key );
+			}
+            this.memberData[key] = member;	
+		}
+		
+		AbstractProject.prototype.removeMember = function(member){
+		    var key = member.getMemberName();			
+			this.memberKeys.remove(key);
+			this.memberData[key] = null;	
+		}
+		
+		AbstractProject.prototype.addTask = function(task){
+		    var key = task.getTaskName();
+			if(this.taskData[key] == null){
+                this.taskKeys.push( key );
+			}
+            this.taskData[key] = task;	
+		}
+		
+		AbstractProject.prototype.reduceTask = function(task){
+		    var key = task.getTaskName();
+			this.taskKeys.remove(key);
+			this.taskData[key] = null;	
+		}
+	
+	    AbstractProject.prototype.showProjectContent = function(){		
+		    document.write("显示"+this.getProjectName()+"项目成员和任务情况：<br>");		    
+			var memberName = "项目成员:";			
+			for (var i = 0; i < this.memberKeys.length; i++) {                   	
+                memberName	= memberName +	this.memberKeys[i]+";" ;		
+			}			
+			document.write(memberName);	
+			document.write("<br>");
+						
+			var taskName = "项目任务:";			
+			for (var t = 0; t < this.taskKeys.length; t++) {                	
+                taskName = taskName + this.taskKeys[t]+";" ;			 
+			}
+			document.write(taskName);				
+			document.write("<br>");	        			
+		}
+		
+		// 定义Mediator抽象类.		
+		function Mediator(){};
+		
+		Mediator.prototype.changMember = function(projectA, projectB,member){		   
+		    projectA.removeMember(member);			
+		    projectB.addMember(member);		
+		}
+		
+		Mediator.prototype.changTask = function(project1, project2,task){
+		    project1.reduceTask(task);
+		    project2.addTask(task);
+		}
+		
+		Mediator.prototype.doCoordination = function(){}
+	
+	    function Project(){};
+		
+		Project.prototype = new AbstractProject();		
+		
+	
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+		
+		var Programmer1= new Member("程序员1");
+		var Programmer2= new Member("程序员2");		
+		var Designer1= new Member("设计师1");
+		var Designer2= new Member("设计师2");
+		
+		var ProgramTask1 = new Task("编程工作1");
+		var ProgramTask2 = new Task("编程工作2");		
+		var DesignTask1 = new Task("设计工作1");
+		var DesignTask2 = new Task("设计工作2");
+		
+		var project1= new AbstractProject();
+		project1.setProjectName("ProjectA");
+		project1.addMember(Programmer1);
+		project1.addMember(Programmer2);
+		project1.addTask(ProgramTask1);
+		project1.addTask(ProgramTask2);
+		
+		
+		var project2= new AbstractProject();
+		project2.setProjectName("ProjectB");
+		project2.addMember(Designer1);
+		project2.addMember(Designer2);
+		project2.addTask(DesignTask1);
+		project2.addTask(DesignTask2);
+		
+		
+		//进行项目人员和工作的协调
+		document.write("—————————协调前的情况—————————<br>");
+		project1.showProjectContent();
+		project2.showProjectContent();
+				
+		var TechnicalDirector = new Mediator();	        	
+				
+		//协调两个项目的人员
+		TechnicalDirector.changMember(project1,project2,Programmer1);		
+		TechnicalDirector.changMember(project2,project1,Designer1);		
+		
+		//协调两个项目的任务
+		TechnicalDirector.changTask(project1, project2, ProgramTask1);				
+		TechnicalDirector.changTask(project2, project1, DesignTask1);
+		
+		document.write("—————————协调后的情况—————————<br>");
+		project1.showProjectContent();
+		project2.showProjectContent();
+
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

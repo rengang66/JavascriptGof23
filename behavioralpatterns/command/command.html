@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>command 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("command设计模式(对象方式).<br>");
+
+		// 定义Command抽象类.
+		var Command = function() {
+			this.subordinate = null ;
+		};		
+		
+		Command.prototype.setMan = function(subordinate ){	
+		     this.subordinate = subordinate ;
+		};
+		
+		Command.prototype.getMan = function( ){	
+		     return this.subordinate  ;
+		};
+		
+		Command.prototype.Execute = function( ){};
+		
+		// 定义Manager类.
+		function Manager(){		
+		    this.command = null ;
+		};
+		
+		Manager.prototype.setCommand = function( command ){	
+		     this.command = command ;
+		};
+		
+		Manager.prototype.getCommand = function( ){	
+		     return this.command  ;
+		};
+		
+		Manager.prototype.ExecuteCommand = function( ){	
+		     this.command.Execute()  ;
+		};		
+		
+		// 定义Subordinate类.
+		function Subordinate( subordinateName ){		
+		    this.name = subordinateName ;
+		};
+		
+		Subordinate.prototype.setName = function( subordinateName ){	
+		     this.name = subordinateName ;
+		};
+		
+		Subordinate.prototype.getName = function( ){	
+		     return this.name  ;
+		};
+		
+		Subordinate.prototype.executeCommand = function( task ){			    
+			 document.write(  this.name  + "执行" + task + "的命令.<br>");
+		};	
+			
+		// 定义PlanCommand类，继承Command抽象类.
+		function PlanCommand(){};
+		
+		PlanCommand.prototype = new Command();
+		
+		PlanCommand.prototype.Execute = function( ){				 
+			 document.write("——————编写计划——————<br>");
+		     this.getMan().executeCommand("编写计划");			 
+		};
+		
+		// 定义ReportCommand类，继承Command抽象类.
+		function ReportCommand(){};
+		
+		ReportCommand.prototype = new Command();
+		
+		ReportCommand.prototype.Execute = function( ){				 
+			 document.write("——————编写报告——————<br>");
+		     this.getMan().executeCommand("编写报告");			 
+		};		
+
+		//  程序开始运行
+		document.write("————————程序开始运行.————————<br>");
+		
+		var subordinate = new Subordinate("小刘");
+		var command1 = new ReportCommand();	
+		command1.setMan(subordinate);
+		var manager = new Manager();
+		manager.setCommand(command1);	
+		manager.ExecuteCommand();
+		
+		
+		var command2 = new PlanCommand();	
+		command2.setMan(subordinate);
+		manager.setCommand(command2);		
+		manager.ExecuteCommand();
+
+		document.write("————————程序结束运行.————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

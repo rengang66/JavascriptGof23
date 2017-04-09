@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>strategy设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("strategy设计模式(对象方式).<br>");
+				
+		// 定义Strategy抽象类.
+		function Strategy(){};		
+		Strategy.prototype.doWork = function( project ){}
+		
+        // 定义Project类.		
+		function Project( projectName ){	
+            this.projectName = projectName ;
+    		this.strategy = null ;	
+		};
+		
+		Project.prototype.getProjectName = function( ){
+		    return this.projectName;
+		};
+		
+		Project.prototype.setProjectName = function(projectName){
+		    this.projectName = projectName ;
+		};
+		
+		Project.prototype.getProjectName = function( ){
+		    return this.projectName;
+		};
+		
+		Project.prototype.setStrategy = function(strategy){
+		    this.strategy = strategy ;	
+		};
+		
+		Project.prototype.getStrategy = function(){
+		    return this.strategy ;	
+		};
+		
+		Project.prototype.doStrategyWork = function(){
+		    this.strategy.doWork(this); ;	
+		};
+		
+		// 定义BankStrategy实现类，继承Strategy抽象类.
+		function BankStrategy( ){};		
+		BankStrategy.prototype = new Strategy();
+		
+		BankStrategy.prototype.doWork = function(project){
+		    document.write(project.getProjectName()+"采用银行策略的工作。<br>");		    
+		};
+		
+		// 定义GovernmentStrategy实现类，继承Strategy抽象类.
+		function GovernmentStrategy( ){};		
+		GovernmentStrategy.prototype = new Strategy();
+		
+		GovernmentStrategy.prototype.doWork = function(project){
+		    document.write(project.getProjectName()+"采用政府策略的工作。<br>");		    
+		};
+		
+		// 定义TelecomStrategy实现类，继承Strategy抽象类.
+		function TelecomStrategy( ){};		
+		TelecomStrategy.prototype = new Strategy();
+		
+		TelecomStrategy.prototype.doWork = function(project){
+		    document.write(project.getProjectName()+"采用电信策略的工作。<br>");		    
+		};
+		
+	    	
+		//  程序开始运行
+		document.write("———————程序开始运行.———————<br>");
+				
+		document.write("——————要求projectA采用银行策略——————<br>");
+		var projectA = new Project("projectA");
+		var strategy1 = new BankStrategy();
+		projectA.setStrategy(strategy1);
+		projectA.doStrategyWork();
+		
+		document.write("——————要求projectB采用政府策略——————<br>");
+		var projectB = new Project("projectB");
+		var strategy2 = new GovernmentStrategy();
+		projectB.setStrategy(strategy2);
+		projectB.doStrategyWork();
+		
+		document.write("——————要求projectC采用电信策略——————<br>");
+		var projectC = new Project("projectC");
+		var strategy3 = new TelecomStrategy();
+		projectC.setStrategy(strategy3);
+		projectC.doStrategyWork();
+
+		document.write("———————程序结束运行.———————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>interpreter设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("interpreter设计模式(对象方式).<br>");
+
+		// 定义AbstractExpression抽象类.
+		function AbstractExpression(){};
+		
+		AbstractExpression.prototype.Interpret = function( project ){	
+              if ( project != null && typeof project === "object" ){
+			  document.write( project.getProjectName()+"的理解。<br>");
+			  }		
+		};		
+		
+		// 定义FinancialDepExpression类，继承AbstractExpression抽象类.
+		function FinancialDepExpression(){};
+		
+		FinancialDepExpression.prototype = new AbstractExpression();
+		
+		FinancialDepExpression.prototype.Interpret = function( project ){	
+              if ( project != null && typeof project === "object" ){
+			      document.write( "财务部对" + project.getProjectName() + "的理解。<br>");
+			  }		
+		};
+		
+		// 定义MarketDepExpression类，继承AbstractExpression抽象类.
+		function MarketDepExpression(){};
+		
+		MarketDepExpression.prototype = new AbstractExpression();
+		
+		MarketDepExpression.prototype.Interpret = function( project ){	
+              if ( project != null && typeof project === "object" ){
+			      document.write( "市场部对" + project.getProjectName() + "的理解。<br>");
+			  }		
+		};
+		
+		// 定义TechnicalDepExpression类，继承AbstractExpression抽象类.
+		function TechnicalDepExpression(){};
+		
+		TechnicalDepExpression.prototype = new AbstractExpression();
+		
+		TechnicalDepExpression.prototype.Interpret = function( project ){	
+              if ( project != null && typeof project === "object" ){
+			      document.write( "技术部对" + project.getProjectName() + "的理解。<br>");
+			  }
+		};
+		
+		// 定义Project类
+		function Project(projectName){
+		    this.projectName = projectName ;
+		};
+		
+	    Project.prototype.setProjectName = function( projectName ){
+            this.projectName = projectName ;
+		}
+		
+		Project.prototype.getProjectName = function( ){
+		   return this.projectName;
+		}
+	
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+
+		var project = new Project("ProjectA");
+		
+		var financial = new FinancialDepExpression();
+		
+		financial.Interpret( project );
+		
+		var market = new MarketDepExpression();
+		
+		market.Interpret( project );
+		
+		var technical = new TechnicalDepExpression();
+		
+		technical.Interpret( project );		
+
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

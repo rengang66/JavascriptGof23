@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>memento设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("memento设计模式(对象方式).<br>");
+
+		// 定义Memento类.							
+		function Memento(meetName,meetType,meetdate,meetLeader,meetParticipants,decide,meetContent){
+		    this.meetName = meetName ;
+	        this.meetType = meetType ;
+	        this.meetdate = meetdate ;
+	        this.meetLeader = meetLeader ;
+	        this.meetParticipants = meetParticipants  ;
+	        this.decide = decide ;
+	        this.meetContent = meetContent ;
+		};
+		
+		Memento.prototype.showContent = function( ){	
+             document.write( meetContent + ".<br>");
+		};
+		
+		Memento.prototype.setMeetName = function( meetName ){	
+             this.meetName = meetName;
+		};
+		
+		Memento.prototype.getMeetName = function( ){	
+             return this.meetName ;
+		};
+		
+		Memento.prototype.setMeetType = function( meetType ){	
+             this.meetType = meetType;
+		};
+		
+		Memento.prototype.getMeetType = function( ){	
+             return this.meetType ;
+		};
+		
+		Memento.prototype.setMeetdate = function( meetdate ){	
+             this.meetdate = meetdate;
+		};
+		
+		Memento.prototype.getMeetdate = function( ){	
+             return this.meetdate ;
+		};
+		
+		Memento.prototype.setMeetLeader = function( meetLeader ){	
+             this.meetLeader = meetLeader;
+		};
+		
+		Memento.prototype.getMeetLeader = function( ){	
+             return this.meetLeader ;
+		};
+		
+		Memento.prototype.setMeetParticipants = function( meetParticipants ){	
+             this.meetParticipants = meetParticipants;
+		};
+		
+		Memento.prototype.getMeetParticipants = function( ){	
+             return this.meetParticipants ;
+		};
+		
+		Memento.prototype.setDecide = function( decide ){	
+             this.decide = decide;
+		};
+		
+		Memento.prototype.getDecide = function( ){	
+             return this.decide ;
+		};
+		
+		Memento.prototype.setMeetContent = function( meetContent ){	
+             this.meetContent = meetContent;
+		};
+		
+		Memento.prototype.getMeetContent = function( ){	
+             return this.meetContent ;
+		};
+
+		// 定义Meeting类.
+	    function Meeting(){
+		    this.meetName = null ;
+	        this.meetType = null ;
+	        this.meetdate = null ;
+	        this.meetLeader = null ;
+	        this.meetParticipants = null ;
+	        this.decide = null ;
+	        this.meetContent = null ;
+		};
+		
+		Meeting.prototype.showContent = function( ){	
+             document.write( meetContent + ".<br>");
+		};
+		
+		Meeting.prototype.setMeetName = function( meetName ){	
+             this.meetName = meetName;
+		};
+		
+		Meeting.prototype.getMeetName = function( ){	
+             return this.meetName ;
+		};
+		
+		Meeting.prototype.setMeetType = function( meetType ){	
+             this.meetType = meetType;
+		};
+		
+		Meeting.prototype.getMeetType = function( ){	
+             return this.meetType ;
+		};
+		
+		Meeting.prototype.setMeetdate = function( meetdate ){	
+             this.meetdate = meetdate;
+		};
+		
+		Meeting.prototype.getMeetdate = function( ){	
+             return this.meetdate ;
+		};
+		
+		Meeting.prototype.setMeetLeader = function( meetLeader ){	
+             this.meetLeader = meetLeader;
+		};
+		
+		Meeting.prototype.getMeetLeader = function( ){	
+             return this.meetLeader ;
+		};
+		
+		Meeting.prototype.setMeetParticipants = function( meetParticipants ){	
+             this.meetParticipants = meetParticipants;
+		};
+		
+		Meeting.prototype.getMeetParticipants = function( ){	
+             return this.meetParticipants ;
+		};
+		
+		Meeting.prototype.setDecide = function( decide ){	
+             this.decide = decide;
+		};
+		
+		Meeting.prototype.getDecide = function( ){	
+             return this.decide ;
+		};
+		
+		Meeting.prototype.setMeetContent = function( meetContent ){	
+             this.meetContent = meetContent;
+		};
+		
+		Meeting.prototype.getMeetContent = function( ){	
+             return this.meetContent ;
+		};
+		
+		Meeting.prototype.doDecide = function( ){	
+             this.meetContent = "会议名称：" + this.meetName + ";";
+		     this.meetContent = this.meetContent + "会议类型：" + this.meetType + ";";
+		     this.meetContent = this.meetContent + "会议时间：" + this.meetdate + ";";
+		     this.meetContent = this.meetContent + "会议主持人：" + this.meetLeader + ";";
+		     this.meetContent = this.meetContent + "会议参加者：" + this.meetParticipants + "\r";
+		     this.meetContent = this.meetContent + "会议内容：" + this.meetParticipants + ";";;
+		};
+		
+		Meeting.prototype.CreateMemento = function(){
+		    var mo = new Memento(this.meetName, this.meetType, this.meetdate, this.meetLeader,
+				this.meetParticipants, this.decide, this.meetContent);
+			return mo;
+		};
+		
+		Meeting.prototype.recoveryMemento = function(mo){
+		    this.meetName = mo.getMeetName();
+		    this.meetType = mo.getMeetType();
+		    this.meetdate = mo.getMeetdate();
+		    this.meetLeader = mo.getMeetLeader();
+		    this.meetParticipants = mo.getMeetParticipants();
+		    this.decide = mo.getDecide();
+		    this.meetContent = mo.getMeetContent();
+		};
+		
+		Meeting.prototype.showContent = function(){
+		    document.write(this.meetContent + "<br>");
+		};
+		
+		// 定义Caretaker类.
+		function Caretaker(){
+		    this.keys = new Array();            
+            this.data = new Object();
+		};
+		
+		Caretaker.prototype.recoveryMemento = function( meetdate){			    
+            for(var i = 0;i<this.keys.length;i++){
+			    if (meetdate  == this.keys[i]){
+				   return this.data[meetdate];
+				}                  
+			}	
+		    return null;
+		}
+		
+		Caretaker.prototype.saveMemento = function( meetdate,memento){
+            if(this.data[meetdate] == null){
+                 this.keys.push( meetdate );
+			}
+            this.data[meetdate] = memento;		
+		}
+		
+		Caretaker.prototype.showContent = function(){
+		    document.write("———————显示全部的会议情况———————<br>");
+			var meetdate,meetContent;			
+			for(var i = 0;i<this.keys.length;i++){
+                   meetdate = this.keys[i];
+				   meetContent = this.data[meetdate];
+                   document.write( meetdate +";" + meetContent.getMeetContent() + "<br>");
+			}		
+		}				
+	
+		//  程序开始运行
+		document.write("———————程序开始运行.———————<br>");
+
+		var meet1 = new Meeting();			
+		meet1.setMeetName("meetName1");
+		meet1.setMeetType("meetType1");
+		meet1.setMeetdate("2009-01-01");
+		meet1.setMeetLeader("meetLeader1");
+		meet1.setMeetParticipants("meetParticipants1");
+		meet1.setDecide("decide1");		
+		meet1.doDecide();
+			
+		var memento = meet1.CreateMemento();	
+		var caretaker = new Caretaker();			
+		caretaker.saveMemento(memento.getMeetdate(),memento);		
+		
+		var meet2 = new Meeting();		
+		meet2.setMeetName("meetName2");
+		meet2.setMeetType("meetType2");
+		meet2.setMeetdate("2009-02-01");
+		meet2.setMeetLeader("meetLeader2");
+		meet2.setMeetParticipants("meetParticipants2");
+		meet2.setDecide("decide2");		
+		meet2.doDecide();		
+						
+		memento = meet2.CreateMemento();			
+							
+		caretaker.saveMemento(memento.getMeetdate(),memento);			
+		caretaker.showContent();	
+
+		document.write("———————程序结束运行.———————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

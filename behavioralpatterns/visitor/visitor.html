@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>visitor设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("visitor设计模式(对象方式).<br>");
+				
+		// 定义AbstractCompany抽象类.
+		function AbstractCompany(){
+		    this.vistor = null ;
+		};
+		
+		AbstractCompany.prototype.Accept = function( vistor ){
+		    this.vistor = vistor ;
+		};
+		
+		AbstractCompany.prototype.getVisitor = function(){
+		    return this.vistor;
+		};
+			
+		AbstractCompany.prototype.doVisit = function( vistor ){};
+	
+	    // 定义Visitor抽象类.
+	    function Visitor(){};		
+		Visitor.prototype.VisitCompanyA = function( company ){};		
+		Visitor.prototype.VisitCompanyB = function( company ){};
+		
+		// 定义CompanyA实现类，继承AbstractCompany抽象类.
+		function CompanyA(){};		
+		CompanyA.prototype = new AbstractCompany();
+		
+		CompanyA.prototype.doVisit = function(){
+		    this.getVisitor().VisitCompanyA(this);
+		};
+		
+		// 定义CompanyB实现类，继承AbstractCompany抽象类.
+		function CompanyB(){};		
+		CompanyB.prototype = new AbstractCompany();
+		
+		CompanyB.prototype.doVisit = function(){
+		    this.getVisitor().VisitCompanyB(this);
+		};
+		
+		// 定义AccountingFirm实现类，继承Visitor抽象类.
+		function AccountingFirm(){};		
+		AccountingFirm.prototype = new Visitor();
+		
+		AccountingFirm.prototype.VisitCompanyA = function(){
+		    document.write("对CompanyA类公司进行会计审计工作<br>");
+		};
+		
+		AccountingFirm.prototype.VisitCompanyB = function(){
+		    document.write("对CompanyB类公司进行会计审计工作<br>");
+		};
+
+		// 定义TaxBureau实现类，继承Visitor抽象类.
+		function TaxBureau(){};		
+		TaxBureau.prototype = new Visitor();
+		
+		TaxBureau.prototype.VisitCompanyA = function(company){
+		    document.write("对CompanyA类公司进行税务审计工作<br>");
+		};
+		
+		TaxBureau.prototype.VisitCompanyB = function(company){
+		    document.write("对CompanyB类公司进行税务审计工作<br>");
+		};
+		
+		// 定义TradeBureau实现类，继承Visitor抽象类.
+        function TradeBureau(){};		
+		TradeBureau.prototype = new Visitor();
+		
+		TradeBureau.prototype.VisitCompanyA = function(company){
+		    document.write("对CompanyA类公司进行工商年审工作<br>");
+		};
+		
+		TradeBureau.prototype.VisitCompanyB = function(company){
+		    document.write("对CompanyB类公司进行工商年审工作<br>");
+		};				
+	    	
+		//  程序开始运行
+		document.write("———————程序开始运行.———————<br>");	
+		
+		var company1 = new CompanyA();	
+		var company2 = new CompanyB();	
+		
+		var accountingFirm = new AccountingFirm();
+		var taxBureau = new TaxBureau();
+		var tradeBureau = new TradeBureau();
+		
+		document.write("————对CompanyA类公司进行处理————<br>");
+		company1.Accept(accountingFirm);		
+		company1.doVisit();
+		
+		company1.Accept(taxBureau);		
+		company1.doVisit();	
+		
+		company1.Accept(tradeBureau);		
+		company1.doVisit();	
+		
+		document.write("————对CompanyB类公司进行处理————<br>");
+		company2.Accept(accountingFirm);		
+		company2.doVisit();
+		
+		company2.Accept(taxBureau);		
+		company2.doVisit();	
+		
+		company2.Accept(tradeBureau);		
+		company2.doVisit();	
+
+		document.write("———————程序结束运行.———————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

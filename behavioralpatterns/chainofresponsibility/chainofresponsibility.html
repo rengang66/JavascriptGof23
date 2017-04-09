@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>chainofresponsibility 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("chainofresponsibility设计模式(对象方式).<br>");		
+		
+		// 定义AbstractSuperMan抽象类.
+		function AbstractSuperMan(){
+		   this.answer = null;
+	       this.successorSuperMan = null ;
+		};
+		
+		AbstractSuperMan.prototype.getAnswer = function(){	
+           return 	this.answer;	
+		};
+		
+		AbstractSuperMan.prototype.setAnswer = function( answer ){	
+           this.answer = answer ;	
+		};
+		
+		AbstractSuperMan.prototype.getSuccessorSuperMan = function(){	
+           return 	this.successorSuperMan;	
+		};
+		
+		AbstractSuperMan.prototype.setSuccessorSuperMan = function( object ){	
+           this.successorSuperMan = object ;
+		};
+		
+		AbstractSuperMan.prototype.answerTheQuestion = function( object ){           
+		};
+		
+		// 定义PrimaryMan类.
+		function PrimaryMan(){
+		   this.thisAnswer = null;	       
+		};
+		
+		PrimaryMan.prototype.question = function( answer ){	           
+		   if (this.thisAnswer == answer) return true;
+		   return false ;
+		};
+		
+		PrimaryMan.prototype.setThisAnswer = function( answer ){
+		    this.thisAnswer = answer ;	  
+		}
+		
+		PrimaryMan.prototype.getThisAnswer = function( ){
+		    return this.thisAnswer  ;	  
+		}
+		
+		// 定义SuperManOne实现类，继承AbstractSuperMan抽象类.
+		function SuperManOne(){
+		   this.isAnswer = false;       
+		};		
+		
+		SuperManOne.prototype = new AbstractSuperMan();
+		
+		SuperManOne.prototype.answerTheQuestion = function( man ){		   
+		    if (man.question( this.answer )){
+			   document.write("SuperManOne回答正确。<br>");	
+			}
+            else{			    
+			   if (this.isAnswer){
+			       document.write("大家都不能回答这个问题。<br>");	
+			   }
+			   else{
+			       //document.write("32。<br>");
+			       this.isAnswer = true;
+				   if ( this.getSuccessorSuperMan() !== null ){
+				      document.write("SuperManOne不会回答问题，提交下一个。<br>");						  
+					  this.getSuccessorSuperMan().answerTheQuestion( man );
+				   }				   
+			   }
+			}			  
+		};
+		
+		// 定义SuperManTwo实现类，继承AbstractSuperMan抽象类.
+		function SuperManTwo(){
+		   this.isAnswer = false;       
+		};
+		
+		SuperManTwo.prototype = new AbstractSuperMan();
+		
+		SuperManTwo.prototype.answerTheQuestion = function( man ){
+		    if (man.question( this.answer )){
+			   document.write("SuperManTwo回答正确。<br>");	
+			}
+            else{
+			   if (this.isAnswer){
+			       document.write("大家都不能回答这个问题。<br>");	
+			   }
+			   else{
+			       this.isAnswer = true;
+				   if ( this.getSuccessorSuperMan() != null ){
+				      document.write("SuperManTwo不会回答问题，提交下一个。<br>");	
+					  this.getSuccessorSuperMan().answerTheQuestion(man);
+				   }				   
+			   }
+			}			  
+		};
+		
+		// 定义SuperManThree实现类，继承AbstractSuperMan抽象类.
+		function SuperManThree(){
+		   this.isAnswer = false;       
+		};
+		
+		SuperManThree.prototype = new AbstractSuperMan();
+		
+		SuperManThree.prototype.answerTheQuestion = function( man ){
+		    if (man.question( this.answer )){
+			   document.write("SuperManThree回答正确。<br>");	
+			}
+            else{
+			   if (this.isAnswer){
+			       document.write("大家都不能回答这个问题。<br>");	
+			   }
+			   else{
+			       this.isAnswer = true;
+				   if ( this.getSuccessorSuperMan() != null ){
+				      document.write("SuperManThree不会回答问题，提交下一个。<br>");	
+					  this.getSuccessorSuperMan().answerTheQuestion(man);
+				   }				   
+			   }
+			}			  
+		};
+				
+
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+		
+		var superMan1 = new SuperManOne();
+		var superMan2 = new SuperManTwo();
+		var superMan3 = new SuperManThree();
+		
+		//形成一个闭环的链
+		superMan1.setSuccessorSuperMan(superMan2);
+		superMan2.setSuccessorSuperMan(superMan3);
+		superMan3.setSuccessorSuperMan(superMan1);
+		//document.write("1<br>");
+		
+		//设置提问者的问题和答案
+		var primaryMan = new PrimaryMan();
+		primaryMan.setThisAnswer('ANSWER');
+				
+		//让superMan3能回答这个答案
+		superMan3.setAnswer('ANSWER');
+		
+		superMan1.answerTheQuestion(primaryMan);
+
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

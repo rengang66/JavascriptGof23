@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>template设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("template设计模式(对象方式).<br>");
+				
+		// 定义ProjectProcess接口.
+		var ProjectProcess = function() {
+			//this.name = 'Company';
+			this.methods = [ 'feasibilityProcess', 'technicalDiscussionProcess', 'bidProcess', 
+			    'requirementProcess', 'designProcess', 'programProcess', 'testProcess', 
+				'deploymentProcess', 'maintenanceProcess', 'doActualWork', 'showProcess' ];
+		};
+
+		// 定义ProjectProcess接口下的实现方法验证，保证实现其接口的实现类必须有对应的方法.
+		ProjectProcess.ensureImplements = function(ProjectProcessImplement) {
+			var projectProcess = new ProjectProcess();
+			var implement = new ProjectProcessImplement();
+
+			for (var j = 0, methodsLen = projectProcess.methods.length; j < methodsLen; j++) {
+				var method = projectProcess.methods[j];
+				if (!implement[method]
+						|| typeof implement[method] !== 'function') {
+					throw new Error("强制性实现检测: 对象 " + implement + "没有实现 "
+							+ projectProcess.name + " 接口。 方法 " + method + " 没有找到."
+							+ ".<br>");
+				}
+			}
+		};
+	
+	    // 定义ProjectProcessTemplate抽象类.
+	    function ProjectProcessTemplate(){
+		    this.processKeys = new Array();           
+            this.processData = new Object();
+		};
+		
+		//定义ProjectProcessTemplate抽象类——行性分析过程方法
+		ProjectProcessTemplate.prototype.feasibilityProcess = function(content){
+		    var topic ="feasibilityProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+		
+		//定义ProjectProcessTemplate抽象类——技术交流过程
+		ProjectProcessTemplate.prototype.technicalDiscussionProcess = function(content){
+		    var topic ="technicalDiscussionProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+		
+		//定义ProjectProcessTemplate抽象类——投标过程
+		ProjectProcessTemplate.prototype.bidProcess = function(content){
+		    var topic ="bidProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+		
+		//定义ProjectProcessTemplate抽象类——需求调研和分析过程
+		ProjectProcessTemplate.prototype.requirementProcess = function(content){
+		    var topic ="requirementProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+	
+	    //定义ProjectProcessTemplate抽象类——设计过程
+		ProjectProcessTemplate.prototype.designProcess = function(content){
+		    var topic ="designProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+	
+	    //定义ProjectProcessTemplate抽象类——编码过程
+		ProjectProcessTemplate.prototype.programProcess = function(content){
+		    var topic ="programProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+	
+	    //定义ProjectProcessTemplate抽象类——测试过程
+		ProjectProcessTemplate.prototype.testProcess = function(content){
+		    var topic ="testProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+	
+	    //定义ProjectProcessTemplate抽象类——部署和实施过程
+		ProjectProcessTemplate.prototype.deploymentProcess = function(content){
+		    var topic ="deploymentProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+		
+		//定义ProjectProcessTemplate抽象类——维护过程
+		ProjectProcessTemplate.prototype.maintenanceProcess = function(content){
+		    var topic ="maintenanceProcess";
+		    if(this.processData[topic] == null){
+                 this.processKeys.push( topic );
+			}
+            this.processData[topic] = content;	
+		};
+		
+		ProjectProcessTemplate.prototype.showProcess = function(content){
+		    var key,value;
+            //document.write(list.length+"41<br>");	    
+		    for (var i = 0; i < this.processKeys.length; i++) {
+			    key = 	this.processKeys[i];
+                value = this.processData[key]
+                document.write("过程: " + key + "; 内容: " + value +"<br>");				
+			}	
+		}		
+	
+	    //定义ProjectA实现类，继承ProjectProcessTemplate抽象类
+		function ProjectA(){};			
+		ProjectA.prototype = new ProjectProcessTemplate();
+		
+		ProjectA.prototype.doActualWork = function(){		
+		    this.feasibilityProcess("定制可行性研究");		
+		    this.technicalDiscussionProcess("定制技术交流");		
+		    this.bidProcess("定制投标");		
+		    this.requirementProcess("定制需求");
+		    this.designProcess("定制设计");
+		    this.programProcess("定制编码");		
+		    this.testProcess("定制测试");		
+		    this.deploymentProcess("定制部署");		
+		    this.maintenanceProcess("定制维护");		
+	    }
+		
+		// 保证ProjectA实现类实现ProjectProcess接口
+		ProjectProcess.ensureImplements(ProjectA);				
+		
+		//定义ProjectB实现类，继承ProjectProcessTemplate抽象类
+		function ProjectB(){};				
+		ProjectB.prototype = new ProjectProcessTemplate();
+		
+		ProjectB.prototype.doActualWork = function(){		
+		    this.requirementProcess("定制需求");
+		    this.designProcess("定制设计");
+		    this.programProcess("定制编码");		
+		    this.testProcess("定制测试");		
+		    this.deploymentProcess("定制部署");		
+		    this.maintenanceProcess("定制维护");		
+	    }
+		
+		// 保证ProjectB实现类实现ProjectProcess接口
+		ProjectProcess.ensureImplements(ProjectB);		
+		
+	    	
+		//  程序开始运行
+		document.write("——————程序开始运行.——————<br>");
+				
+		document.write("——————projectA的过程——————<br>");
+		var project1 = new ProjectA();
+		project1.doActualWork();
+		project1.showProcess();
+		
+		document.write("——————projectB的过程——————<br>");		
+		var project2 = new ProjectB();
+		project2.doActualWork();
+		project2.showProcess();				
+
+		document.write("——————程序结束运行.——————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

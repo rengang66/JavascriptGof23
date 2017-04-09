@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>observer设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("observer设计模式(对象方式).<br>");
+
+		// 定义Array类的删除方法
+		Array.prototype.remove = function( key ) {
+            for (var i = 0; i < this.length; i++) {
+                  if (key == this[i]){this.splice(i, 1);}					  
+			}
+        }
+		
+		// 定义AbstractAddressBook抽象类.
+		function AbstractAddressBook(){
+		    this.employeeList = new Array();
+			this.addressBook = null;
+		};
+		
+		AbstractAddressBook.prototype.setAddressBook = function( addressBook ){	
+            this.addressBook = addressBook;	
+		};
+				
+		AbstractAddressBook.prototype.getAddressBook = function( ){	
+            return this.addressBook ;	
+		};
+		
+		AbstractAddressBook.prototype.getemployeeList = function( ){	
+            return this.employeeList ;	
+		};
+		
+		AbstractAddressBook.prototype.addEmployee = function( employee ){	
+            this.employeeList.push( employee ) ;	
+		};
+		
+		AbstractAddressBook.prototype.removeEmployee = function(){	
+            this.employeeList.remove( employee ) ;	
+		};
+		
+		AbstractAddressBook.prototype.notice = function(){};
+	
+		// 定义AbstractEmployee抽象类.
+		function AbstractEmployee(){
+		    this.addressBook = null;
+			this.addressBookContents = null;
+		};
+		
+		AbstractEmployee.prototype.setAddressBook = function( addressBook ){	
+            this.addressBook = addressBook;	
+		};
+		
+		AbstractEmployee.prototype.getAddressBook = function( ){	
+            return this.addressBook ;	
+		};
+		
+		AbstractEmployee.prototype.getaddressBookContents = function( ){	
+            return this.addressBookContents ;	
+		};
+		
+		AbstractEmployee.prototype.update = function( book ){	
+		   this.setAddressBook(book);
+           this.addressBookContents = this.addressBook.getAddressBook();
+		};
+		
+		// 定义CompanyAddressBook实现类，继承AbstractAddressBook抽象类.
+		function CompanyAddressBook(){		    
+			this.addressBook = "旧的通信录";			
+		};
+		
+		CompanyAddressBook.prototype = new AbstractAddressBook();
+		
+		CompanyAddressBook.prototype.addEmployee = function( employee ){	
+		    employee.showUpdate(this);
+            this.getemployeeList().push( employee ) ;	
+		};
+		
+		CompanyAddressBook.prototype.notice = function(){	
+		    var list = this.getemployeeList();               
+		    for (var i = 0; i < this.getemployeeList().length; i++) {			   
+                list[i].showUpdate(this);					 
+			}	
+		};
+		
+		// 定义CompanyEmployee实现类，继承AbstractEmployee抽象类.
+		function CompanyEmployee( name ){		   
+			this.employeeName = name ;
+		};
+		
+		CompanyEmployee.prototype = new AbstractEmployee();
+		
+		CompanyEmployee.prototype.setEmployeeName = function( employeeName ){	
+		    this.employeeName = employeeName;	
+		};
+		
+		CompanyEmployee.prototype.getEmployeeName = function(){	
+		    return this.employeeName ;	
+		};
+		
+		CompanyEmployee.prototype.showUpdate = function(book){	
+		    this.update(book);
+			document.write(this.getEmployeeName()+"更新通讯录。"+"通讯录内容："+this.getaddressBookContents()+"<br>");
+		};	
+	
+		//  程序开始运行
+		document.write("————————程序开始运行.————————<br>");
+
+		document.write("——————原有的通讯录——————<br>");
+		var addressBook = new CompanyAddressBook();		
+		
+		var employee1 = new CompanyEmployee("employee1");
+		var employee2 = new CompanyEmployee("employee2");		
+		
+		addressBook.addEmployee(employee1);
+		addressBook.addEmployee(employee2);		
+		
+		document.write("——————更新的通讯录——————<br>");
+		var newAddressBook = "新的通讯录";
+		addressBook.setAddressBook(newAddressBook);		
+		addressBook.notice();	
+
+		document.write("————————程序结束运行.————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>state设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("state设计模式(对象方式).<br>");
+		
+		// 定义State抽象类.
+		function State(){};		
+		State.prototype.doWork = function( project ){};		
+		
+		// 定义Project类.
+		function Project( projectName ){	
+            this.projectName = projectName ;
+    		this.currentState = null ;	
+		};
+		
+		Project.prototype.getProjectName = function( ){
+		    return this.projectName;
+		};
+		
+		Project.prototype.setProjectName = function(projectName){
+		    this.projectName = projectName ;
+		};
+		
+		Project.prototype.getProjectName = function( ){
+		    return this.projectName;
+		};
+		
+		Project.prototype.setCurrentState = function(state){
+		    this.currentState = state ;
+		};
+		
+		Project.prototype.doCurrentWork = function(state){
+		    this.currentState.doWork(this) ;
+		};
+		
+		// 定义ProjectBuilderState实现类，继承State抽象类.
+		function ProjectBuilderState(){};		
+		ProjectBuilderState.prototype = new State();
+        
+        ProjectBuilderState.prototype.doWork = function( project ){		    
+			document.write(project.getProjectName()+"正在进行立项工作<br>");
+		};
+		
+		// 定义ProjectDevelopmentState实现类，继承State抽象类.
+		function ProjectDevelopmentState(){};		
+		ProjectDevelopmentState.prototype = new State();
+        
+        ProjectDevelopmentState.prototype.doWork = function( project ){		    
+			document.write(project.getProjectName()+"正在进行开发工作<br>");
+		};
+	
+	    // 定义ProjectEndState实现类，继承State抽象类.
+	    function ProjectEndState(){};		
+		ProjectEndState.prototype = new State();
+        
+        ProjectEndState.prototype.doWork = function( project ){		    
+			document.write(project.getProjectName()+"正在进行结项工作<br>");
+		};
+		
+		// 定义ProjectMaintenanceState实现类，继承State抽象类.
+		function ProjectMaintenanceState(){};		
+		ProjectMaintenanceState.prototype = new State();
+        
+        ProjectMaintenanceState.prototype.doWork = function( project ){		    
+			document.write(project.getProjectName()+"正在进行维护工作<br>");
+		};
+		
+		// 定义ProjectRunState实现类，继承State抽象类.
+		function ProjectRunState(){};		
+		ProjectRunState.prototype = new State();
+        
+        ProjectRunState.prototype.doWork = function( project ){		    
+			document.write(project.getProjectName()+"正在进行试运行工作<br>");
+		};		
+	
+		//  程序开始运行
+		document.write("———————程序开始运行.———————<br>");
+        
+		var bullder = new ProjectBuilderState();
+		var development = new ProjectDevelopmentState();
+		var run = new ProjectRunState();
+		var maintenance =new ProjectMaintenanceState();
+		var end = new ProjectEndState();
+		
+		var projectA = new Project("projectA");
+		
+		document.write("——————设置项目为立项状态——————<br>");
+		projectA.setCurrentState(bullder);
+		projectA.doCurrentWork();
+		
+		document.write("——————设置项目为开发状态——————<br>");
+		projectA.setCurrentState(development);
+		projectA.doCurrentWork();
+		
+		document.write("——————设置项目为试运行状态——————<br>");
+		projectA.setCurrentState(run);
+		projectA.doCurrentWork();
+		
+		document.write("——————设置项目为维护状态——————<br>");
+		projectA.setCurrentState(maintenance);
+		projectA.doCurrentWork();
+		
+		document.write("——————设置项目为结项状态——————<br>");
+		projectA.setCurrentState(end);
+		projectA.doCurrentWork();		
+
+		document.write("———————程序结束运行.———————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>iterator设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("iterator设计模式(对象方式).<br>");
+
+		// 定义Iterator抽象类.
+		function Iterator(){};
+		
+		Iterator.prototype.next = function( ){	
+              return null;			  	
+		};
+		
+		Iterator.prototype.previous = function( ){	
+              return null;
+		}	
+		
+        // 定义Employee类.		
+		function Employee(employeeName,education){
+		      this.employeeName = employeeName;
+		      this.education = education;
+		};
+		
+		Employee.prototype.setEmployeeName = function( employeeName ){	
+             this.employeeName = employeeName;
+		};
+		
+		Employee.prototype.getEmployeeName = function( ){	
+             return this.employeeName ;
+		};
+		
+		Employee.prototype.setEducation = function( education ){	
+             this.education = education;
+		};
+		
+		Employee.prototype.getEducation = function( ){	
+             return this.education ;
+		};
+		
+		// 定义EmployeeCollection类.	
+		function EmployeeCollection(){
+		        this.employeeList = new Array();
+				this.employeeMax = 0;
+		}
+		
+		EmployeeCollection.prototype.addEmployee = function(employee) {
+		        this.employeeList.push(employee);
+			    this.employeeMax++;				
+			    return this ;
+		}		
+		
+		EmployeeCollection.prototype.getEmployee = function(num) {
+		      var employee = this.employeeList[num];
+			  return employee;
+		}
+		
+		EmployeeCollection.prototype.getEmployeeMax = function() {
+		      return this.employeeMax;
+		}
+		
+		// 定义ImplementIterator实现类.继承Iterator抽象类
+		function ImplementIterator( collection ){		
+		    this.employeeCollection = collection;			
+			//this.currentIndex = 0;
+			this.currentIndex = this.employeeCollection.getEmployeeMax() - 1;		
+		}
+		
+		ImplementIterator.prototype = new Iterator();
+		
+		ImplementIterator.prototype.next = function() {
+		      if (this.currentIndex == -1)	return null;
+			  return this.employeeCollection.getEmployee(this.currentIndex--);
+		}	
+	
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+	
+		var employee1 = new Employee("小王", "学士");
+		var employee2 = new Employee("小张", "学士");
+		var employee3 = new Employee("小刘", "硕士");
+		var employee4 = new Employee("小李", "学士");
+		var employee5 = new Employee("小马", "硕士");		
+		
+		var employeeCollection = new EmployeeCollection();
+		
+		//document.write("2<br>");
+		employeeCollection.addEmployee(employee1).addEmployee(employee2);
+		employeeCollection.addEmployee(employee3).addEmployee(employee4);
+		employeeCollection.addEmployee(employee5);		
+		
+		// 一个一个地判断，如果是“硕士”，显示出姓名
+		var iterator = new ImplementIterator( employeeCollection );		
+		var employee = null ;		
+		do {		   
+			employee = iterator.next();			
+			if (employee != null) {			   
+				if (employee.getEducation() =="硕士"){					
+					document.write(employee.getEmployeeName()+"<br>");					
+				}
+			}
+			
+		} while (employee != null);
+		
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>
