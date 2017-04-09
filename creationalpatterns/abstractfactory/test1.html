@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("abstractfactory设计模式(对象方式).<br>");
+
+		function Person(name ){
+		   this.name = name ;
+		};
+		
+		Person.prototype.getname = function(){
+		   return this.name;
+		}
+		
+		Person.prototype.getname1 = function(){		   
+		}
+		
+		function User(name,password){
+		   this.name = name ;
+		   this.password = password ;
+		   this.elements = new Array(); 
+		}
+		
+		User.prototype = new Person();
+		
+		User.prototype.getPassword = function(){
+		    return this.password;
+		}
+		
+		User.prototype.addContent= function(content){
+		    this.elements.push(content);
+		}
+		
+		User.prototype.add= function(){
+		    this.elements.push('this is only');
+		}
+		
+		User.prototype.getname1 = function(){
+		    return this.password;
+		}
+		
+		User.prototype.show = function(){		    
+			document.write(this.elements + ".<br>");
+
+		}
+		
+		User.prototype.show1 = function(){		    
+			this.show();
+		};
+
+		//  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+
+		var person1 = new Person('大人');
+		
+		document.write(person1.getname()+".<br>")
+		
+		var user1 = new User('小人','111');
+
+		document.write(user1.getPassword()+".<br>")
+		
+		document.write(user1.getname()+".<br>")
+		
+		document.write(user1.getname1()+".<br>")
+			
+		user1.add();
+		user1.show();
+		user1.show1();
+		
+		//user1.addContent('this is one'); 
+		//user1.addContent('this is two'); 
+		//user1.show();
+		
+		//user1.addContent(person1); 
+		//user1.show();
+
+		document.write("——————————————程序结束运行.——————————————<br>");
+
+	})();
+</script>
+
+</head>
+<body>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>abstractfactory 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("abstractfactory设计模式(对象方式).<br>");
+
+		// 定义Company接口，
+		var Company = function() {
+			this.name = 'Company';
+			this.methods = [ 'bulidComputer', 'bulidTelephone' ];
+		};
+
+		// 定义Company接口下的实现方法验证，保证实现其接口的实现类必须有对应的方法.
+		Company.ensureImplements = function(CompanyImplement) {
+			var company = new Company();
+			var implement = new CompanyImplement();
+
+			for (var j = 0, methodsLen = company.methods.length; j < methodsLen; j++) {
+				var method = company.methods[j];
+				if (!implement[method]
+						|| typeof implement[method] !== 'function') {
+					throw new Error("强制性实现检测: 对象 " + implement + "没有实现 "
+							+ company.name + " 接口。 方法 " + method + " 没有找到."
+							+ ".<br>");
+				}
+			}
+		};
+		
+		// 定义Computer抽象类，
+		function Computer(){
+		};
+		
+		Computer.prototype.doUse = function(){		   
+		};
+		
+		// 定义PersonalComputer类.
+		function PersonalComputer(){		
+		};
+		
+		PersonalComputer.prototype = new Computer();
+		
+		PersonalComputer.prototype.doUse = function(){	
+		    document.write("这是个人计算机的功能.<br>");
+		};
+		
+		// 定义NotebookComputer类.
+		function NotebookComputer(){		
+		};
+		
+		NotebookComputer.prototype = new Computer();
+		
+		NotebookComputer.prototype.doUse = function(){	
+		    document.write("这是笔记本电脑的功能.<br>");
+		};		
+		
+		// 定义Telephone抽象类.
+		function Telephone(){
+		};
+		
+		Telephone.prototype.doUse = function(){		   
+		};
+		
+		// 定义Mobile类.
+        function Mobile(){		
+		};
+		
+		Mobile.prototype = new Telephone();
+		
+		Mobile.prototype.doUse = function(){	
+		    document.write("这是手机的功能.<br>");
+		};
+		
+		// 定义DesktopPhone类.
+		function DesktopPhone(){		
+		};
+		
+		DesktopPhone.prototype = new Telephone();
+		
+		DesktopPhone.prototype.doUse = function(){	
+		    document.write("这是座机电话的功能.<br>");
+		};
+					
+		// 定义CompanyA实现类.
+		var CompanyA = function() { 			
+		};
+
+		CompanyA.prototype = {
+			bulidComputer : function(parameter) {
+			    var computer  = null ;
+			    if (parameter =='个人电脑') {
+				     computer = new PersonalComputer();
+				     return computer; }
+		        else if  (parameter =='笔记本电脑') {
+				     computer = new NotebookComputer();
+				     return computer;}
+		        else return computer;				
+			},
+			bulidTelephone : function(parameter) {
+			    var telephone  = null ;
+			    if (parameter =='座机电话') {
+				     telephone = new DesktopPhone();
+				     return telephone; }
+		        else if  (parameter =='手机') {
+				    telephone = new Mobile();				
+				    return telephone;}
+		        else return telephone;		
+				return telephone;
+			}
+		};
+		
+		// 保证CompanyA实现类实现Company接口
+		Company.ensureImplements(CompanyA);
+		
+
+		//  程序开始运行
+		document.write("—————————程序开始运行.——————————<br>");
+
+		var company = new CompanyA();
+
+		// 根据传入的参数得到ProductA产品
+		var computer1 = company.bulidComputer('个人电脑');
+		computer1.doUse();
+
+		var computer2 = company.bulidComputer('笔记本电脑');
+		computer2.doUse();
+		
+		
+		// 根据传入的参数得到ProductB产品
+		var telephone1 = company.bulidTelephone('座机电话');		
+		telephone1.doUse();
+		
+		var telephone2 = company.bulidTelephone('手机');		
+		telephone2.doUse();
+
+		document.write("———————————程序结束运行.——————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

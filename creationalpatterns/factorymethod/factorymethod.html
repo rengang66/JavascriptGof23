@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>factorymethod 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+	(function() {
+		document.write("factorymethod设计模式(对象方式).<br>");
+
+		// 定义Product接口，Constructor.
+		var Product = function() {
+			this.name = 'Product';
+			this.methods = [ 'getProductType', 'getParameter', 'doUse' ];
+		};
+
+		// 定义Product接口下的实现方法验证，保证实现其接口的实现类必须有对应的方法.
+		Product.ensureImplements = function(ProductImplement) {
+			var product = new Product();
+			var implement = new ProductImplement();
+
+			for (var j = 0, methodsLen = product.methods.length; j < methodsLen; j++) {
+				var method = product.methods[j];
+				if (!implement[method]
+						|| typeof implement[method] !== 'function') {
+					throw new Error("强制性实现检测: 对象 " + implement + "没有实现 "
+							+ product.name + " 接口。 方法 " + method + " 没有找到."
+							+ ".<br>");
+				}
+			}
+		};		
+
+		//定义ProductA实现类
+		var ProductA = function() { // implements Product
+			var productType = "ProductA";
+			var productParameter = "A";
+		};
+
+		ProductA.prototype = {
+			getProductType : function() {
+				return productType;
+			},
+			getParameter : function() {
+				return productParameter;
+			},
+			doUse : function() {
+				document.write("这是ProductA实现的功能<br>");
+			}
+		};
+		// 保证ProductA实现类实现Product接口
+		Product.ensureImplements(ProductA);
+
+		//定义ProductB实现类
+		var ProductB = function() { // implements Product
+			var productType = "ProductB";
+			var productParameter = "B";
+		};		
+
+		ProductB.prototype = {
+			getProductType : function() {
+				return productType;
+			},
+			getParameter : function() {
+				return productParameter;
+			},
+			doUse : function() {
+				document.write("这是ProductB实现的功能<br>");
+			}
+		};
+		// 保证ProductB实现类实现Product接口
+		Product.ensureImplements(ProductB);
+
+		//定义Company类
+		var Company = function() {};
+		
+		Company.prototype = {
+			bulidProduct : function(model) {
+				var product;
+				switch (model) {
+				case 'A':
+					product = new ProductA();
+					break;
+				case 'B':
+					product = new ProductB();
+					break;
+				default:
+					product = new ProductB();
+				}
+				return product;
+			}
+		};
+
+		//  程序开始运行
+		document.write("——————————程序开始运行.———————————<br>");
+
+		var company = new Company();
+
+		// 根据传入的参数得到ProductA产品
+		var product1 = company.bulidProduct('A');
+		product1.doUse();
+
+		// 根据传入的参数得到ProductB产品
+		var product2 = company.bulidProduct('B');
+		product2.doUse();
+
+		document.write("——————————程序结束运行.——————————<br>");
+		
+	})();
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

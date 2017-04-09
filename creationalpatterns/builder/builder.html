@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>builder 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("builder设计模式(对象方式).<br>");
+		
+		// 定义AbstractProjectProcessBuilder抽象类.
+		var AbstractProjectProcessBuilder = function() {
+			this.processList = new Array(); 	
+		};			
+		
+        //抽象类的抽象方法		
+		AbstractProjectProcessBuilder.prototype = {		
+               buildFeasibility : function() {},	//可行性分析过程	
+		       buildTechnicalDiscussion : function() {}, //技术交流过程
+		       buildBid : function() {}	, //投标过程
+			   buildRequirement: function() {}, //需求调研和分析过程
+			   buildDesign: function() {}, //设计过程
+			   buildProgram: function() {}, //编码过程
+			   buildTest: function() {}, //测试过程
+			   buildDeployment: function() {}, //部署和实施过程
+			   buildMaintenance: function() {} //维护过程
+		};				
+       	
+		AbstractProjectProcessBuilder.prototype.add = function(content){		
+		    this.processList.push(content);	
+		};		
+		
+		AbstractProjectProcessBuilder.prototype.showProcess = function(){	
+		   document.write(this.processList + ".<br>");
+		};
+		
+		// 定义ConcreteProjectProcessBuilder类，继承AbstractProjectProcessBuilder类
+		function ConcreteProjectProcessBuilder(){		
+		};
+		
+		ConcreteProjectProcessBuilder.prototype = new AbstractProjectProcessBuilder();		
+		
+		ConcreteProjectProcessBuilder.prototype.buildFeasibility = function(){				
+            this.add('可行性分析过程');		             		
+		};
+			
+		ConcreteProjectProcessBuilder.prototype.buildTechnicalDiscussion = function(){				
+            this.add('技术交流过程');				
+		};
+		
+		ConcreteProjectProcessBuilder.prototype.buildBid = function(){				
+            this.add('投标过程');				
+		};
+		
+		ConcreteProjectProcessBuilder.prototype.buildRequirement = function(){				
+            this.add('需求调研和分析过程');				
+		};
+		
+		ConcreteProjectProcessBuilder.prototype.buildDesign = function(){				
+            this.add('设计过程');				
+		};
+		
+		ConcreteProjectProcessBuilder.prototype.buildProgram = function(){				
+            this.add('编码过程');				
+		};
+		
+		ConcreteProjectProcessBuilder.prototype.buildTest = function(){				
+            this.add('测试过程');				
+		};
+		
+		ConcreteProjectProcessBuilder.prototype.buildDeployment = function(){				
+            this.add('部署和实施过程');				
+		};
+		
+		ConcreteProjectProcessBuilder.prototype.buildMaintenance = function(){				
+            this.add('维护过程');				
+		};	
+		
+		// 定义ProjectA类
+		function ProjectA( object ){
+		   this.projectBulider = object ;
+		};
+		
+		// ProjectA类的组建函数
+		ProjectA.prototype.construct = function(){				
+		    if (typeof this.projectBulider === 'object'){			
+				if (typeof this.projectBulider.buildFeasibility === 'function'){					
+				     this.projectBulider.buildFeasibility();
+				}	
+				if (typeof this.projectBulider.buildTechnicalDiscussion === 'function'){
+				      this.projectBulider.buildTechnicalDiscussion();
+				}	
+                if (typeof this.projectBulider.buildProgram === 'function'){
+				      this.projectBulider.buildProgram();
+				}
+                if (typeof this.projectBulider.buildTest === 'function'){
+				      this.projectBulider.buildTest();
+				}
+				if (typeof this.projectBulider.buildDeployment === 'function'){
+				      this.projectBulider.buildDeployment();
+				}
+				if (typeof this.projectBulider.buildMaintenance === 'function'){
+				      this.projectBulider.buildMaintenance();
+				}
+			}         			 
+		};	
+				
+        ProjectA.prototype.showProcess = function(){	
+              this.projectBulider.showProcess();		
+		};					
+
+		//  程序开始运行
+		document.write("———————————程序开始运行.——————————<br>");
+
+		//定义构造类变量
+		var bulider = new ConcreteProjectProcessBuilder();
+
+		// 传入构造类变量到ProductA
+		var project = new ProjectA( bulider );
+		project.construct();
+		project.showProcess();
+
+		document.write("———————————程序结束运行.———————————<br>");
+		
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>

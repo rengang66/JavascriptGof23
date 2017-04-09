@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>singleton 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+     document.write("singleton设计模式(对象方式).<br>");
+	 
+	 
+	(function() {	
+		
+        // 定义SaleMan类，Constructor.
+		var SaleMan = function(name) {
+			this.name = name;
+			this.service = '服务';
+		};
+
+		SaleMan.prototype = {
+			getName : function() {
+				return this.name;
+			},
+			getService : function() {
+				return this.service;
+			},
+			doUse : function() {
+				document.write(this.name + this.service +".<br>");
+				//document.write("wo ddd" +".<br>");
+			}
+		};
+
+		// 定义ServiceManager类
+		var ServiceManager = function(object) {
+			this.saleman = object;
+		};		
+		
+		ServiceManager.prototype = {
+		    getSaleManService : function() {
+				if (this.saleman !== null) {
+				    return this.saleman;
+				}
+				return null ;				
+			}			
+		};
+
+    //  程序开始运行
+		document.write("——————————————程序开始运行.——————————————<br>");
+	
+		var saleMan = new SaleMan('小刘');
+		
+		var serviceManager  = new ServiceManager(saleMan);		
+		
+		var saleman1 = serviceManager.getSaleManService();			
+		saleman1.doUse();
+		
+        var saleman2 = serviceManager.getSaleManService();
+		saleman2.doUse();
+		
+		var saleman3 = serviceManager.getSaleManService();
+		saleman3.doUse();
+		 
+		document.write("——————————————程序结束运行.——————————————<br>");		
+
+	}());
+	
+	
+	
+	
+	
+</script>
+
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>prototype 设计模式(对象方式)</title>
+
+<script type="text/javascript">
+
+	(function() {
+		document.write("prototype设计模式(对象方式).<br>");
+		
+		// 增加Array类的删除方法
+		Array.prototype.remove = function( key ) {
+            for (var i = 0; i < this.length; i++) {
+                  if (key == this[i]){this.splice(i, 1);}					  
+			}
+        }
+				
+		// 定义AbstractPrototype抽象类.
+		function AbstractPrototype(){};
+		
+		AbstractPrototype.prototype.cloneMyself = function(){			    
+			return this ;
+		};
+		
+		AbstractPrototype.prototype.addSomeIntrouction = function(topic,content){};
+		
+		AbstractPrototype.prototype.deleteSomeIntrouction = function(key){};
+		
+		AbstractPrototype.prototype.showIntrouction = function(){};
+		
+		// 定义CompanyBaseIntroduction实现类.继承AbstractPrototype抽象类
+		function CompanyBaseIntroduction(){
+		    //存放主键的数组
+            this.keys = new Array();
+           //存放数据
+            this.data = new Object();
+		};
+		
+		CompanyBaseIntroduction.prototype = new AbstractPrototype();
+		
+		CompanyBaseIntroduction.prototype.addSomeIntrouction = function(topic,content){			    
+            if(this.data[topic] == null){
+                 this.keys.push( topic );
+			}
+            this.data[topic] = content;			
+		};
+		
+		CompanyBaseIntroduction.prototype.deleteSomeIntrouction = function( key ){                
+			this.keys.remove( key );			
+            this.data[key] = null;			
+		};		
+		
+		CompanyBaseIntroduction.prototype.cloneMyself = function(){		            	    
+			this.addSomeIntrouction('公司介绍', '这是公司基本介绍');	           			
+		    return this;
+		};
+				
+		CompanyBaseIntroduction.prototype.showIntrouction = function(){		    		  
+			var content = "";
+            for(var i = 0;i<this.keys.length;i++, content+=',<br>'){
+                   var k = this.keys[i];
+                   content += 'key：' + k + '; value：' + this.data[k];
+			}				
+			document.write( content );
+		};
+						
+
+		//  程序开始运行
+		document.write("—————————程序开始运行.—————————<br>");
+		
+		var company = new CompanyBaseIntroduction();
+		
+		var departA = company.cloneMyself();			
+		
+		departA.addSomeIntrouction('部门A介绍', '这是部门A介绍的内容');
+				
+		var departB = departA.cloneMyself();		
+				
+		departB.deleteSomeIntrouction('部门A介绍');		
+		
+		departB.addSomeIntrouction('部门B介绍', '这是部门B介绍的内容');	
+		
+		departB.showIntrouction();
+		
+		document.write("—————————程序结束运行.—————————<br>");
+
+	}());
+	
+</script>
+
+</head>
+<body>
+
+</body>
+</html>
