@@ -1,0 +1,2 @@
+# JavascriptGof23
+基于javascript实现Gof23种设计模式的程序代码
